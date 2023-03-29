@@ -43,7 +43,7 @@ Once these are installed, reboot your machine to update all the paths. If they d
 To setup the ESP32 You'll need to flash a fresh Micropython on the board. First you'll need esptool and invoke
 
 ```bash
-pip install esptool invoke
+pip install esptool invoke adafruit-ampy
 ```
 
 To erase and flash, run 
