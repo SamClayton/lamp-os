@@ -77,13 +77,6 @@
           box-sizing: border-box;
           display: inline-block;
         }
-        .my-form input[type=checkbox] {
-          appearance: auto;
-          width: 2em;
-          height: 2em;
-          margin: 0 12px 0 0;
-          padding: 0;
-        }
         .my-form select {
           background-repeat: no-repeat;
           background-position: center right 12px;
@@ -98,14 +91,6 @@
         .my-form input.pixel_count {
           margin-left: 1em;
           width: 3em;
-        }
-        p.checkbox-wrapper {
-          margin: 0 0 2em 0;
-        }
-        p.checkbox-wrapper input {
-          vertical-align: middle;
-          position: relative;
-          top: -1px;
         }
       </style>
     </head>
@@ -133,21 +118,14 @@
             <div><label for="base_pixels"># LEDs</label><input type="text" id="base_pixels" name="base_pixels" pattern="[0-9]+" class="pixel_count"/></div>
           </div>
 
-          <h3>Lamp Brightness</h3>
-          <div>
-            <div class="two-column">
-              <div style="text-align: left">Darker</div>
-            </div>
-            <div class="two-column">
-              <div style="text-align: right">Brighter</div>
-            </div>
-          </div>
-          <input id="brightness" name="brightness" pattern="[0-9]+" type="range" min="20" max="100" step="5"/>
-
-          <h3>At Home Mode</h3>
-          <p class="checkbox-wrapper">
-            <input id="home_mode" name="home_mode" type="checkbox" />Check to disable animations
-          </p>
+          <h3>Lamp Dimmer Settings</h3>
+          <h5>Current: <span id="current"></span></h5>
+          <div><label for="threshold">Threshold</label></div>
+          <input type="text" id="threshold" name="threshold" pattern="[0-9]+" class="threshold"/>
+          <div><label for="baseline">Baseline</label></div>
+          <input type="text" id="baseline" name="baseline" pattern="[0-9]+" class="baseline"/>
+          <div><label for="amount">Amount</label></div>
+          <input type="text" id="amount" name="amount" pattern="[0-9]+" class="amount"/>
 
           <input type="submit" id="submit-button" value="Submit">
         </form>
@@ -172,8 +150,10 @@
               document.getElementById("shade").value = data.shade.color;
               document.getElementById("base_pixels").value = data.base.pixels;
               document.getElementById("shade_pixels").value = data.shade.pixels;
-              document.getElementById("brightness").value = data.lamp.brightness;
-              document.getElementById("home_mode").checked = data.lamp.home_mode === true && 'checked';
+              document.getElementById("current").innerHTML = data.dimmer.current;
+              document.getElementById("threshold").value = data.dimmer.threshold;
+              document.getElementById("baseline").value = data.dimmer.baseline;
+              document.getElementById("amount").value = data.dimmer.amount;
               submit.value = "Submit";
               submit.disabled = false;
             })

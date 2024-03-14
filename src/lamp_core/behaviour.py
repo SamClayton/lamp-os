@@ -6,6 +6,7 @@ import utime
 class Behaviour:
     def __init__(self, lamp):
         self.lamp = lamp
+        self.use_in_home_mode = True
 
     def __str__(self):
         return self.__class__.__name__
@@ -39,14 +40,18 @@ class AnimationState:
 # chained_behaviors = play other behaviors when the controller is finished its work
 # immediate_control = True to start the control block immediately. defaults to 5 seconds after wake
 class AnimatedBehaviour(Behaviour):
-    def __init__(self, lamp, frames=60, chained_behaviors=None):
+    def __init__(self, lamp, frames=60, chained_behaviors=None, auto_play=False):
         super().__init__(lamp)
         self.frames = frames
         self.frame = 0
         self.current_loop = 0
-        self.animation_state = AnimationState.STOPPED
         self.chained_behaviors = chained_behaviors if isinstance(chained_behaviors, list) else []
         self.immediate_control = False
+        if auto_play is True:
+            self.animation_state = AnimationState.PLAYING
+        else:
+            self.animation_state = AnimationState.STOPPED
+
         gc.collect()
 
     async def control(self):
@@ -57,7 +62,7 @@ class AnimatedBehaviour(Behaviour):
 
     async def animate(self):
         while True:
-            if self.animation_state in(AnimationState.PAUSED, AnimationState.STOPPED):
+            if self.animation_state == AnimationState.STOPPED:
                 await self.next_frame()
                 continue
 
