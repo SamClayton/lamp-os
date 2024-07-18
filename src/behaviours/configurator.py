@@ -25,7 +25,7 @@ class Router():
 
     def post(self, data):
         print(data)
-        name_sanitizer = re.compile('[^a-z]')
+        name_sanitizer = re.compile('[^a-z]{4,15}')
         number_sanitizer = re.compile('[^0-9]+')
         self.config["shade"]["color"] = data["shade"]
         self.config["base"]["color"] = data["base"]
@@ -34,6 +34,7 @@ class Router():
         self.config["lamp"]["name"] = name_sanitizer.sub("", data["name"])
         self.config["lamp"]["brightness"] = abs(int(number_sanitizer.sub("", data["brightness"])))
         self.config["lamp"]["home_mode"] = data.get("home_mode") == "on"
+        self.config["dmx"]["channel"] = abs(int(number_sanitizer.sub("", data["dmx_channel"])))
 
         if not self.config["lamp"]["name"]:
             return {'message': 'bad name'}, 500
